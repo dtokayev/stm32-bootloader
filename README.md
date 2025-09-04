@@ -21,8 +21,7 @@ Run these commands:
 
 ## Firmware compilation and flashing
 
-1. Connect board to the computer
-2. Run these commands from root directory:
+Connect board to the computer and run these commands from root directory:
 
     cd app/
     make
