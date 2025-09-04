@@ -14,7 +14,7 @@ Install dependencies:
 Run these commands:
 
     git clone https://github.com/dtokayev/stm32-bare-metal.git
-    cd std32-bare-metal
+    cd stm32-bare-metal
     git submodule add https://github.com/libopencm3/libopencm3.git
     cd libopencm3
     make
