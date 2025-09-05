@@ -13,10 +13,8 @@ Install dependencies:
 
 Run these commands:
 
-    git clone https://github.com/dtokayev/stm32-bare-metal.git
-    cd stm32-bare-metal
-    git submodule add https://github.com/libopencm3/libopencm3.git
-    cd libopencm3
+    git clone --recurse-submodules https://github.com/dtokayev/stm32-bootloader.git
+    cd stm32-bootloader/libopencm3
     make
 
 ## Firmware compilation and flashing
