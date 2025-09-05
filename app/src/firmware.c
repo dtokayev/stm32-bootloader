@@ -2,24 +2,38 @@
 #include <libopencm3/stm32/gpio.h>
 
 #include "core/system.h"
+#include "core/timer.h"
 
 #define LED_PORT     (GPIOA)
 #define LED_PIN      (GPIO5)
 
 static void gpio_setup(void) {
   rcc_periph_clock_enable(RCC_GPIOA);
-  gpio_mode_setup(LED_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, LED_PIN);
+  gpio_mode_setup(LED_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, LED_PIN);
+  gpio_set_af(LED_PORT, GPIO_AF1, LED_PIN);
 }
 
 int main(void) {
   system_setup();
   gpio_setup();
+  timer_setup();
 
   uint64_t start_time = system_get_ticks();
+  float duty_cycle = 0.0f;
+  float pulse_direction = 1.0f;
+
+  timer_pwm_set_duty_cycle(duty_cycle);
 
   while (1) {
-    if (system_get_ticks() - start_time >= 1000) {
-      gpio_toggle(LED_PORT, LED_PIN);
+    if (system_get_ticks() - start_time >= 10) {
+      duty_cycle += pulse_direction;
+      if (duty_cycle > 100.0f) {
+        pulse_direction = -1.0f;
+      } else if (duty_cycle < 0.0f) {
+        pulse_direction = 1.0f;
+      }
+      timer_pwm_set_duty_cycle(duty_cycle);
+
       start_time = system_get_ticks();
     }
   }
