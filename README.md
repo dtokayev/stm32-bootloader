@@ -25,3 +25,7 @@ Connect board to the computer and run these commands from root directory:
     cd app/
     make
     st-flash write firmware.bin 0x8000000
+
+## Connecting to serial port
+
+Run `cu -l /dev/ttyACM0 -s 115200`. You may need to change `/dev/ttyACM0` to another path assigned by your OS.
