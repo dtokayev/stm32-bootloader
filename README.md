@@ -9,6 +9,7 @@ Install dependencies:
 * `arm-none-eabi`
 * `git`
 * `make`
+* `python3`
 * `stlink-tools`
 
 Run these commands:
