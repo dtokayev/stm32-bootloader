@@ -33,7 +33,7 @@ int main(void) {
   timer_pwm_set_duty_cycle(duty_cycle);
 
   while (1) {
-    if (system_get_ticks() - start_time >= 10) {
+    if (system_get_ticks() - start_time >= 15) {
       duty_cycle += pulse_direction;
       if (duty_cycle > 100.0f) {
         pulse_direction = -1.0f;
