@@ -11,3 +11,4 @@
 generated.*.ld
 .gdb_history
 .DS_Store
+node_modules
