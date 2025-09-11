@@ -88,16 +88,18 @@ let packets: Packet[] = [];
 
 let lastPacket: Buffer = Packet.ack;
 const writePacket = (packet: Buffer) => {
+  console.log('Sending the following packet:');
+  console.log(packet);
   uart.write(packet);
   lastPacket = packet;
-}
+};
 
 let rxBuffer = Buffer.from([]);
 const consumeFromBuffer = (n: number) => {
   const consumed = rxBuffer.slice(0, n);
   rxBuffer = rxBuffer.slice(n);
   return consumed;
-}
+};
 
 uart.on('data', data => {
   console.log(`Received ${data.length} bytes through uart`);
@@ -109,6 +111,7 @@ uart.on('data', data => {
     const raw = consumeFromBuffer(PACKET_LENGTH);
     const packet = new Packet(raw[0], raw.slice(1, 1 + PACKET_DATA_BYTES), raw[PACKET_CRC_INDEX]);
     const computedCrc = packet.computeCrc();
+    console.log(packet);
 
     if (packet.crc !== computedCrc) {
       console.log(`CRC failed, expected 0x${computedCrc.toString(16)}, got 0x${packet.crc.toString(16)}`);
@@ -147,6 +150,9 @@ const main = async () => {
   console.log('Waiting for packet...');
   const packet = await waitForPacket();
   console.log(packet);
+
+  const packetToSend = new Packet(4, Buffer.from([5, 6, 7, 8]));
+  uart.write(packetToSend.toBuffer());
 }
 
 main();
