@@ -4,7 +4,7 @@ const PACKET_LENGTH_BYTES = 1;
 const PACKET_DATA_BYTES   = 16
 const PACKET_CRC_BYTES    = 1;
 const PACKET_CRC_INDEX    = PACKET_LENGTH_BYTES + PACKET_DATA_BYTES;
-const PACKET_LENGTH       = PACKET_LENGTH_BYTES + PACKET_DATA_BYTES + PACKET_CRC_INDEX;
+const PACKET_LENGTH       = PACKET_LENGTH_BYTES + PACKET_DATA_BYTES + PACKET_CRC_BYTES;
 
 const PACKET_ACK_DATA0    = 0x15;
 const PACKET_RETX_DATA0   = 0x19;
@@ -128,7 +128,7 @@ uart.on('data', data => {
     }
 
     console.log(`Storing packet and ack'ing`);
-    packet.push(packet);
+    packets.push(packet);
     writePacket(Packet.ack);
   }
 });
@@ -145,7 +145,7 @@ const waitForPacket = async () => {
 
 const main = async () => {
   console.log('Waiting for packet...');
-  const packet = await.waitForPacket();
+  const packet = await waitForPacket();
   console.log(packet);
 }
 
