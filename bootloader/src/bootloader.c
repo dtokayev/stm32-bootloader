@@ -45,10 +45,16 @@ int main(void) {
   };
   packet.crc = comms_compute_crc(&packet);
 
+  comms_packet_t rx_packet;
+
   while (true) {
     comms_update();
-    comms_write(&packet);
 
+    if (comms_packets_available()) {
+      comms_read(&rx_packet);
+    }
+
+    comms_write(&packet);
     system_delay(500);
   }
 

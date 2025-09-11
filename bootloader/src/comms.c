@@ -104,7 +104,7 @@ void comms_update(void) {
         }
 
         uint32_t next_write_index = (packet_write_index + 1) & packet_buffer_mask;
-        if (next_write_index != packet_read_index) {
+        if (next_write_index == packet_read_index) {
           __asm__("BKPT #0");
         }
 
@@ -127,6 +127,7 @@ bool comms_packets_available(void) {
 
 void comms_write(comms_packet_t* packet) {
   uart_write((uint8_t*)packet, PACKET_LENGTH);
+  comms_packet_copy(packet, &last_transmitted_packet);
 }
 
 void comms_read(comms_packet_t* packet) {
