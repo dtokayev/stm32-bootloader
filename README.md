@@ -30,6 +30,14 @@ Connect board to the computer and run these commands from root directory:
 
 Run `cu -l /dev/ttyACM0 -s 115200`. You may need to change `/dev/ttyACM0` to another path assigned by your OS.
 
+## Debugging
+
+1. Connect board to PC
+2. Run `st-util` in a terminal
+3. From a separate terminal start GDB by running `arm-none-eabi-gdb example_file.elf`. Replace `example_file.elf` with the desired file.
+4. Inside GDB, connect to the server using `(gdb) target extended localhost:4242`
+5. Load the program by running `(gdb) load`
+
 ## Credits
 
 I want to thank [Low Byte Productions](https://www.youtube.com/channel/UC56l7uZA209tlPTVOJiJ8Tw) YouTube channel for his [Bare Metal Programming Playlist](https://youtube.com/playlist?list=PLP29wDx6QmW7HaCrRydOnxcy8QmW0SNdQ) which helped me to start with embedded programming.
