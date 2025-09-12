@@ -21,7 +21,7 @@ cd stm32-bootloader
 git submodule init
 git submodule update
 
-# Build libopencm33
+# Build libopencm3
 cd libopencm3
 make
 cd ..
