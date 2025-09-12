@@ -14,17 +14,38 @@ Install dependencies:
 
 Run these commands:
 
-    git clone --recurse-submodules https://github.com/dtokayev/stm32-bootloader.git
-    cd stm32-bootloader/libopencm3
-    make
+```bash
+# Clone the repo
+git clone https://github.com/dtokayev/stm32-bootloader.git
+cd stm32-bootloader
+git submodule init
+git submodule update
 
-## Firmware compilation and flashing
+# Build libopencm33
+cd libopencm3
+make
+cd ..
 
-Connect board to the computer and run these commands from root directory:
+# Build bootloader firmware
+cd bootloader
+make
+cd ..
 
-    cd app/
-    make
-    st-flash write firmware.bin 0x8000000
+# Build main application firmware
+cd app
+make
+cd ..
+```
+
+## Flashing
+
+Connect board to the computer and run
+
+```bash
+cd app
+make
+st-flash write firmware.bin 0x8000000
+```
 
 ## Connecting to serial port
 
@@ -32,12 +53,29 @@ Run `cu -l /dev/ttyACM0 -s 115200`. You may need to change `/dev/ttyACM0` to ano
 
 ## Debugging
 
-1. Connect board to PC
-2. Run `st-util` in a terminal
-3. From a separate terminal start GDB by running `arm-none-eabi-gdb example_file.elf`. Replace `example_file.elf` with the desired file.
-4. Inside GDB, connect to the server using `(gdb) target extended localhost:4242`
-5. Load the program by running `(gdb) load`
+```bash
+# Connect board to computer
+
+# Start debugging server
+st-util
+
+# Start GDB from a separate terminal.
+# Replace 'example_file.elf' with desired
+# firmware file (e.g. app/firmware.elf or
+# bootloader/bootloader.elf)
+arm-none-eabi-gdb example_file.elf
+
+# Connect GDB to debugging server
+(gdb) target extended localhost:4242
+
+# Load the program
+(gdb) load
+
+# Start execution with breakpoint
+# at first line of code
+(gdb) start
+```
 
 ## Credits
 
-I want to thank [Low Byte Productions](https://www.youtube.com/channel/UC56l7uZA209tlPTVOJiJ8Tw) YouTube channel for his [Bare Metal Programming Playlist](https://youtube.com/playlist?list=PLP29wDx6QmW7HaCrRydOnxcy8QmW0SNdQ) which helped me to start with embedded programming.
+I want to thank [Low Byte Productions Youtube channel](https://www.youtube.com/channel/UC56l7uZA209tlPTVOJiJ8Tw) for his [Bare Metal Programming Playlist](https://youtube.com/playlist?list=PLP29wDx6QmW7HaCrRydOnxcy8QmW0SNdQ) which helped me to start with embedded programming.
