@@ -53,15 +53,6 @@ int main(void) {
 
       start_time = system_get_ticks();
     }
-
-    while (uart_data_available()) {
-      uint8_t data = uart_read_byte();
-      uart_write_byte(data + 1);
-    }
-
-    system_delay(1000);
   }
-
-
   return 0;
 }
