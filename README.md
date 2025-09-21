@@ -1,6 +1,18 @@
-# STM32F401RE Bare Metal Programming
+# STM32F401RE Bootloader and Updater
 
-This repository hosts code that runs on bare metal on STM32F401RE chip.
+Custom bootloader and updater for STM32F4 based boards.
+
+[<img src="./images/stm32.png" width="450" alt="STM32F4 Nucleo Board">](./images/stm32.png)
+
+## Table of contents
+
+- [Setup](#setup)
+- [Flashing](#flashing)
+  - [Standard method](#standard-method)
+  - [Using custom updater](#using-custom-updater)
+- [Debugging](#debugging)
+- [Connecting to serial port](#connecting-to-serial-port)
+- [Credits](#credits)
 
 ## Setup
 
@@ -9,6 +21,7 @@ Install dependencies:
 * `arm-none-eabi`
 * `git`
 * `make`
+* `npm`
 * `python3`
 * `stlink-tools`
 
@@ -35,21 +48,45 @@ cd ..
 cd app
 make
 cd ..
+
+# Install custom updater dependencies
+cd fw_updater
+npm install
+cd ..
 ```
 
 ## Flashing
 
+### Standard method
+
 Connect board to the computer and run
 
 ```bash
+# Compile bootloader
+cd bootloader
+make
+cd ..
+
+# Compile the entire firmware and flash to board
 cd app
 make
 st-flash write firmware.bin 0x8000000
 ```
 
-## Connecting to serial port
+### Using custom updater
 
-Run `cu -l /dev/ttyACM0 -s 115200`. You may need to change `/dev/ttyACM0` to another path assigned by your OS.
+1. Compile firmware as in the previous step
+2. Copy the firmware to the updater root folder and move to that directory
+```bash
+cp app/firmware.bin fw_updater/
+cd fw_updater
+```
+3. After connecting the board to PC, press the reset button and run immediately the updater
+```bash
+tsx index.ts
+```
+
+Step 3 may require a couple of tries since the updater may timeout and if the board is given enough time to move to the main application.
 
 ## Debugging
 
@@ -75,6 +112,10 @@ arm-none-eabi-gdb example_file.elf
 # at first line of code
 (gdb) start
 ```
+
+## Connecting to serial port
+
+Run `cu -l /dev/ttyACM0 -s 115200`. You may need to change `/dev/ttyACM0` to another path assigned by your OS.
 
 ## Credits
 
